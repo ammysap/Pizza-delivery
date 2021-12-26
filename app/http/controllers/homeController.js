@@ -5,6 +5,7 @@ function homeController()
     return {
         index(req,res)
         {
+            
             Menu.find(function(err,foundMenu)
             {
                 // if(!err)
