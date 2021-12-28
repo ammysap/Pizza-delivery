@@ -29,13 +29,24 @@
         <ul class="flex items-center">
           <li class="mx-6"><a href="#">Menu</a></li>
           <li class="mx-6"><a href="#">Offers</a></li>
-          <% if(user){ %>
+          <% if(user){ %> 
+            
+            <% if(user.role==="customer"){ %>
 
-          <li class="mx-6">
-            <form id="logout" action="/logout" method="POST">
-              <a onclick="document.getElementById('logout').submit()" href="#">Logout</a>
+              <li class="mx-6"><a href="/customer/orders">Orders</a></li>
+
+            <% }else{ %>
+
+              <li class="mx-6"><a href="/admin/orders">Get Orders</a></li>
+            <% } %>
+            <li class="mx-6">
+              <form id="logout" action="/logout" method="POST">
+                <a onclick="document.getElementById('logout').submit()" href="#"
+                  >Logout</a
+                >
             </form>
           </li>
+
           <%} else{ %>
           <li class="mx-6"><a href="/register">Register</a></li>
           <li class="mx-6"><a href="/login">Login</a></li>
