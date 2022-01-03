@@ -1,6 +1,7 @@
 const axios = require("axios");
 const Noty = require("noty");
-const initAdmin =require("./admin");
+const initAdmin = require("./admin");
+const moment = require("moment");
 
 let addToCart = document.querySelectorAll(".add-to-cart");
 
@@ -11,7 +12,6 @@ function upadteCart(pizza) {
     .post("/updateCart", pizza)
     .then(function (res) {
       cartCounter.innerText = res.data.totalQty;
-      console.log(res.data.totalQty);
       new Noty({
         type: "success",
         timeout: 1000,
@@ -39,12 +39,82 @@ addToCart.forEach(function (btn) {
 
 //remove alert after t seconds
 
-const alertMsg= document.querySelector('#success-alert');
-if(alertMsg)
-{
+const alertMsg = document.querySelector("#success-alert");
+if (alertMsg) {
   setTimeout(function () {
-    alertMsg.remove()
-    },2000);
+    alertMsg.remove();
+  }, 2000);
 }
 
-initAdmin();
+
+//change single order status
+
+let statuses = document.querySelectorAll(".status-line");
+
+let hiddenInput = document.querySelector("#hiddenInput");
+let order = hiddenInput ? hiddenInput.value : null;
+
+order = JSON.parse(order);
+
+let time = document.createElement("small");
+
+function updateStatus(order) {
+  statuses.forEach(function (status) {
+    status.classList.remove("status-completed");
+    status.classList.remove("current-status");
+  });
+  
+  stepCompleted = true;
+  
+  statuses.forEach(function (status) {
+    let dataProp = status.dataset.status;
+    if (stepCompleted) {
+      status.classList.add("status-completed");
+    }
+    if (dataProp === order.status) {
+      stepCompleted = false;
+      time.innerText = moment(order.updatedAt).format("hh:mm A");
+      status.appendChild(time);
+      if (status.nextElementSibling) {
+        status.nextElementSibling.classList.add("current-status");
+      }
+    }
+  });
+}
+
+updateStatus(order);
+
+
+
+//Socket
+
+let socket = io();
+initAdmin(socket);
+// Join user
+if (order) {
+  socket.emit("join", `order_${order._id}`);
+}
+
+
+socket.on("orderUpdated",function(data)
+{
+  const updatedOrder = {...order};
+  updatedOrder.updatedAt= moment().format();
+  updatedOrder.status = data.status;
+  updateStatus(updatedOrder);
+  new Noty({
+    type: "success",
+    timeout: 1000,
+    text: "Order updated",
+    progressBar: false,
+  }).show();
+  // console.log(data);
+})
+
+
+//join admin 
+ let adminAreaPath = window.location.pathname
+ if(adminAreaPath.includes("admin"))
+ {
+   socket.emit("join","adminRoom");
+ }

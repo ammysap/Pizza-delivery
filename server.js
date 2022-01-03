@@ -13,12 +13,18 @@ const { collection } = require("./app/models/menu");
 const MongoDbStore = require("connect-mongo");
 const bodyParser =require("body-parser");
 const passport = require("passport");
+const Emitter = require("events");
 
 mongoose.connect("mongodb://localhost:27017/PizzaDb", {
   useNewUrlParser: true,
 });
 
+//Event emmiter
 
+const eventEmitter = new Emitter();
+app.set("eventEmitter",eventEmitter);
+
+//Session config
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
@@ -36,7 +42,6 @@ passportInit(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-//global middleware
 
 
 
@@ -47,6 +52,7 @@ app.use(flash());
 app.use(express.static("public"));
 app.use(expressLayout);
 app.use(express.json());
+//global middleware
 app.use(function (req, res, next) {
   res.locals.session = req.session;
   res.locals.user = req.user;
@@ -61,6 +67,34 @@ require("./routes/web")(app);
 
 //set template engine
 
-app.listen(PORT, function () {
+const server= app.listen(PORT, function () {
   console.log("server started on port 3000");
 });
+
+
+
+//Socket
+
+const io = require("socket.io")(server);
+io.on("connection",function(socket)
+{
+  // Join
+  socket.on("join",function(orderId)
+  {
+    socket.join(orderId);
+  })
+  
+})
+
+
+eventEmitter.on("orderUpdated",function(data)
+{
+  io.to(`order_${data.id}`).emit("orderUpdated",data);
+})
+
+
+eventEmitter.on("orderPlaced",function(data)
+{
+  io.to("adminRoom").emit("orderPlaced",data);
+})
+ 

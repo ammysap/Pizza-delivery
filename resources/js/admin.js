@@ -1,18 +1,19 @@
 const axios = require("axios");
 const moment = require("moment");
+const Noty = require("noty");
 
-function initAdmin() {
+function initAdmin(socket) {
   const orderTableBody = document.querySelector("#orderTableBody");
   let orders = [];
   let markup;
-  axios.get('/admin/orders', {
-    headers: {
-        "X-Requested-With": "XMLHttpRequest"
-    }
-})
+  axios
+    .get("/admin/orders", {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    })
     .then(function (res) {
       orders = res.data;
-      console.log(orders);
       markup = generateMarkup(orders);
       orderTableBody.innerHTML = markup;
     })
@@ -99,5 +100,18 @@ function initAdmin() {
       })
       .join("");
   }
+
+  socket.on("orderPlaced", function (order) {
+    new Noty({
+      type: "success",
+      timeout: 1000,
+      text: "New Order",
+      progressBar: false,
+    }).show();
+  orders.unshift(order);
+  orderTableBody.innerHTML="";
+  orderTableBody.innerHTML = generateMarkup(orders);
+
+  });
 }
 module.exports = initAdmin;
