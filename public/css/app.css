@@ -314,6 +314,21 @@ section.hero {
   color: #fff;
 }
 
+.update-button {
+  border: 2px solid #FE5F1E;
+  color: #FE5F1E;
+  transition: all 0.3s ease-in-out;
+}
+.update-button:hover {
+  background: #FE5F1E;
+  border-color: #fff;
+  color: #fff;
+}
+
+.hide {
+  display: none;
+}
+
 .btn-primary {
   background: #FE5F1E;
   transition: all 0.3s ease-in-out;
@@ -458,4 +473,21 @@ section.status {
   float: right;
   font-size: 14px;
   margin-top: 8px;
+}
+
+@media (max-width: 1060px) {
+  .container {
+    max-width: 90%;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 768px) {
+  .status-box ul li span::before {
+    font-size: 34px;
+  }
 }

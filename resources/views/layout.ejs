@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="/css/app.css" type="text/css" />
   </head>
   <body>
-    <nav class="container mx-auto flex items-center justify-between py-4 px-2">
+    <nav class="container mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between py-4 px-2">
       <div>
         <a href="/">
           <img src="/img/logo.png" alt="logo" />
@@ -29,19 +29,18 @@
       </div>
       <div>
         <ul class="flex items-center">
-          <li class="mx-6"><a href="#">Menu</a></li>
-          <li class="mx-6"><a href="#">Offers</a></li>
+          <li class="mx-4 md:mx-6"><a href="#">Menu</a></li>
           <% if(user){ %> 
             
             <% if(user.role==="customer"){ %>
 
-              <li class="mx-6"><a href="/customer/orders">Orders</a></li>
+              <li class="mx-4 md:mx-6"><a href="/customer/orders">Orders</a></li>
 
             <% }else{ %>
 
-              <li class="mx-6"><a href="/admin/orders">Get Orders</a></li>
+              <li class="mx-4 md:mx-6"><a href="/admin/orders">Get Orders</a></li>
             <% } %>
-            <li class="mx-6">
+            <li class="mx-4 md:mx-6">
               <form id="logout" action="/logout" method="POST">
                 <a onclick="document.getElementById('logout').submit()" href="#"
                   >Logout</a
@@ -50,11 +49,11 @@
           </li>
 
           <%} else{ %>
-          <li class="mx-6"><a href="/register">Register</a></li>
-          <li class="mx-6"><a href="/login">Login</a></li>
+          <li class="mx-4 md:mx-6"><a href="/register">Register</a></li>
+          <li class="mx-4 md:mx-6"><a href="/login">Login</a></li>
 
           <% } %>
-          <li class="mx-6">
+          <li class="mx-4 md:mx-6">
             <a
               href="/cart"
               class="inline-block px-4 py-2 rounded-full flex items-center"

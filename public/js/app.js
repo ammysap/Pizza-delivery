@@ -2250,7 +2250,7 @@ function upadteCart(pizza) {
 addToCart.forEach(function (btn) {
   btn.addEventListener("click", function (e) {
     var pizza = JSON.parse(btn.dataset.pizza);
-    upadteCart(pizza); // console.log(pizza);
+    upadteCart(pizza);
   });
 }); //remove alert after t seconds
 
@@ -2296,8 +2296,7 @@ function updateStatus(order) {
 
 updateStatus(order); //Socket
 
-var socket = io();
-initAdmin(socket); // Join user
+var socket = io(); // Join user
 
 if (order) {
   socket.emit("join", "order_".concat(order._id));
@@ -2320,6 +2319,7 @@ socket.on("orderUpdated", function (data) {
 var adminAreaPath = window.location.pathname;
 
 if (adminAreaPath.includes("admin")) {
+  initAdmin(socket);
   socket.emit("join", "adminRoom");
 }
 

@@ -36,6 +36,19 @@ section.hero {
     color: $pure;
   }
 }
+.update-button{
+  border: 2px solid $primary;
+  color: $primary;
+  transition: $smooth;
+  &:hover {
+    background: $primary;
+    border-color: $pure;
+    color: $pure;
+  }
+}
+.hide{
+  display: none;
+}
 .btn-primary {
   background: $primary;
   transition: $smooth;
@@ -188,4 +201,22 @@ section.status {
   float: right;
   font-size: 14px;
   margin-top: 8px;
+}
+
+
+@media(max-width:1060px){
+  .container {
+    max-width: 90%;
+  }
+  table{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media(max-width:768px) {
+  .status-box ul li span::before{
+    font-size: 34px;
+  }
 }

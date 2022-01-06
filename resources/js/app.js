@@ -7,11 +7,14 @@ let addToCart = document.querySelectorAll(".add-to-cart");
 
 let cartCounter = document.querySelector("#cartCounter");
 
+
+
 function upadteCart(pizza) {
   axios
     .post("/updateCart", pizza)
     .then(function (res) {
       cartCounter.innerText = res.data.totalQty;
+
       new Noty({
         type: "success",
         timeout: 1000,
@@ -33,9 +36,9 @@ addToCart.forEach(function (btn) {
   btn.addEventListener("click", function (e) {
     let pizza = JSON.parse(btn.dataset.pizza);
     upadteCart(pizza);
-    // console.log(pizza);
   });
 });
+
 
 //remove alert after t seconds
 
@@ -89,7 +92,6 @@ updateStatus(order);
 //Socket
 
 let socket = io();
-initAdmin(socket);
 // Join user
 if (order) {
   socket.emit("join", `order_${order._id}`);
@@ -113,8 +115,9 @@ socket.on("orderUpdated",function(data)
 
 
 //join admin 
- let adminAreaPath = window.location.pathname
- if(adminAreaPath.includes("admin"))
- {
+let adminAreaPath = window.location.pathname
+if(adminAreaPath.includes("admin"))
+{
+   initAdmin(socket);
    socket.emit("join","adminRoom");
  }
