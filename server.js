@@ -15,7 +15,7 @@ const bodyParser =require("body-parser");
 const passport = require("passport");
 const Emitter = require("events");
 
-mongoose.connect("mongodb://localhost:27017/PizzaDb", {
+mongoose.connect("mongodb+srv://admin-aman:MongoDB123@cluster2.0clvf.mongodb.net/PizzaDb", {
   useNewUrlParser: true,
 });
 
