@@ -30,7 +30,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     store: MongoDbStore.create({
-      mongoUrl: "mongodb://localhost:27017/PizzaDb",
+      mongoUrl: "mongodb+srv://admin-aman:MongoDB123@cluster2.0clvf.mongodb.net/PizzaDb",
     }),
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 }, //24 hours
