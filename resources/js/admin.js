@@ -108,10 +108,10 @@ function initAdmin(socket) {
       text: "New Order",
       progressBar: false,
     }).show();
-  orders.unshift(order);
-  orderTableBody.innerHTML="";
-  orderTableBody.innerHTML = generateMarkup(orders);
-
+    orders.unshift(order);
+    orderTableBody.innerHTML="";
+    orderTableBody.innerHTML = generateMarkup(orders);
+    
   });
 }
 module.exports = initAdmin;

@@ -23,10 +23,12 @@ function initRoutes(app) {
   
   
   app.get("/login",guest, authController().login);
-  app.post("/login", authController().postLogin);
+  app.post("/userlogin", authController().postUserLogin);
+  app.post("/adminlogin", authController().postAdminLogin);
 
   app.get("/register",guest, authController().register);
-  app.post("/register",authController().postRegister);
+  app.post("/userregister",authController().postuserRegister);
+  app.post("/adminregister",authController().postadminRegister);
   
   app.post("/logout",authController().logout);
 

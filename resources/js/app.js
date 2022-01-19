@@ -7,8 +7,6 @@ let addToCart = document.querySelectorAll(".add-to-cart");
 
 let cartCounter = document.querySelector("#cartCounter");
 
-
-
 function upadteCart(pizza) {
   axios
     .post("/updateCart", pizza)
@@ -39,7 +37,6 @@ addToCart.forEach(function (btn) {
   });
 });
 
-
 //remove alert after t seconds
 
 const alertMsg = document.querySelector("#success-alert");
@@ -48,7 +45,6 @@ if (alertMsg) {
     alertMsg.remove();
   }, 2000);
 }
-
 
 //change single order status
 
@@ -66,9 +62,9 @@ function updateStatus(order) {
     status.classList.remove("status-completed");
     status.classList.remove("current-status");
   });
-  
+
   stepCompleted = true;
-  
+
   statuses.forEach(function (status) {
     let dataProp = status.dataset.status;
     if (stepCompleted) {
@@ -87,8 +83,6 @@ function updateStatus(order) {
 
 updateStatus(order);
 
-
-
 //Socket
 
 let socket = io();
@@ -97,11 +91,9 @@ if (order) {
   socket.emit("join", `order_${order._id}`);
 }
 
-
-socket.on("orderUpdated",function(data)
-{
-  const updatedOrder = {...order};
-  updatedOrder.updatedAt= moment().format();
+socket.on("orderUpdated", function (data) {
+  const updatedOrder = { ...order };
+  updatedOrder.updatedAt = moment().format();
   updatedOrder.status = data.status;
   updateStatus(updatedOrder);
   new Noty({
@@ -111,13 +103,43 @@ socket.on("orderUpdated",function(data)
     progressBar: false,
   }).show();
   // console.log(data);
-})
+});
 
+//join admin
+let adminAreaPath = window.location.pathname;
+if (adminAreaPath.includes("admin")) {
+  initAdmin(socket);
+  socket.emit("join", "adminRoom");
+}
 
-//join admin 
-let adminAreaPath = window.location.pathname
-if(adminAreaPath.includes("admin"))
-{
-   initAdmin(socket);
-   socket.emit("join","adminRoom");
- }
+// toggle between register form
+
+let registerRole = document.querySelector("#registerRole");
+if (registerRole) {
+  registerRole.addEventListener("change", function (e) {
+    console.log(e.target.value);
+    if (e.target.value === "admin") {
+      document.querySelector("#customerRegister").classList.add("hide");
+      document.querySelector("#adminRegister").classList.remove("hide");
+    } else {
+      document.querySelector("#customerRegister").classList.remove("hide");
+      document.querySelector("#adminRegister").classList.add("hide");
+    }
+  });
+}
+
+//togle between login form
+
+let loginRole = document.querySelector("#loginRole");
+if (loginRole) {
+  loginRole.addEventListener("change", function (e) {
+    console.log(e.target.value);
+    if (e.target.value === "admin") {
+      document.querySelector("#customerLogin").classList.add("hide");
+      document.querySelector("#adminLogin").classList.remove("hide");
+    } else {
+      document.querySelector("#customerLogin").classList.remove("hide");
+      document.querySelector("#adminLogin").classList.add("hide");
+    }
+  });
+}

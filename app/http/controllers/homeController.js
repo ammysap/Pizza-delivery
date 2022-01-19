@@ -16,6 +16,10 @@ function homeController()
                 // {
                 //     console.log(err);
                 // }
+                if(req.user)
+                {
+                    console.log(req.user.email);
+                }
                 res.render("home",{pizzas:foundMenu});
             });
         }

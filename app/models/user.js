@@ -22,6 +22,10 @@ const userSchema = new Schema(
       type: String,
       default: "customer",
     },
+    phone :{
+      type:String,
+      required:false
+    }
   },
   { timestamps: true }
 );

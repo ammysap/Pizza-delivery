@@ -2314,13 +2314,47 @@ socket.on("orderUpdated", function (data) {
     text: "Order updated",
     progressBar: false
   }).show(); // console.log(data);
-}); //join admin 
+}); //join admin
 
 var adminAreaPath = window.location.pathname;
 
 if (adminAreaPath.includes("admin")) {
   initAdmin(socket);
   socket.emit("join", "adminRoom");
+} // toggle between register form
+
+
+var registerRole = document.querySelector("#registerRole");
+
+if (registerRole) {
+  registerRole.addEventListener("change", function (e) {
+    console.log(e.target.value);
+
+    if (e.target.value === "admin") {
+      document.querySelector("#customerRegister").classList.add("hide");
+      document.querySelector("#adminRegister").classList.remove("hide");
+    } else {
+      document.querySelector("#customerRegister").classList.remove("hide");
+      document.querySelector("#adminRegister").classList.add("hide");
+    }
+  });
+} //togle between login form
+
+
+var loginRole = document.querySelector("#loginRole");
+
+if (loginRole) {
+  loginRole.addEventListener("change", function (e) {
+    console.log(e.target.value);
+
+    if (e.target.value === "admin") {
+      document.querySelector("#customerLogin").classList.add("hide");
+      document.querySelector("#adminLogin").classList.remove("hide");
+    } else {
+      document.querySelector("#customerLogin").classList.remove("hide");
+      document.querySelector("#adminLogin").classList.add("hide");
+    }
+  });
 }
 
 /***/ }),
