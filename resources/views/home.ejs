@@ -1,6 +1,9 @@
 <section class="hero py-16">
   <div class="container mx-auto flex items-center">
     <div class="w-1/2">
+      <% if(user){ %>
+        <h1 class="text-2xl md:text-4xl">Hey! <%=userName %></h1>
+      <% } %>
       <h6 class="text-lg"><em>Are you hungary</em></h6>
       <h1 class="text-3xl md:text-6xl">Don't wait !!</h1>
       <button class="px-6 py-2 rounded-full font-bold mt-4 btn-primary">
