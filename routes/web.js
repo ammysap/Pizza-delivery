@@ -5,7 +5,7 @@ const cartController=require("../app/http/controllers/customers/cartController")
 const orderController =require("../app/http/controllers/customers/orderController");
 const adminOrderController =require("../app/http/controllers/admin/orderController");
 const statusController =require("../app/http/controllers/admin/statusController");
-
+const passwordController=require("../app/http/controllers/passwordController");
 //middlewares
 
 
@@ -21,9 +21,13 @@ function initRoutes(app) {
   app.get("/", homeController().index);
 
   app.get("/getotp",guest,authController().getOtp);
-
   app.post("/generateOTP",guest,authController().generateOTP);
   app.post("/validateOTP",guest,authController().validateOTP);
+
+  app.get("/updatePassGetOTP",guest,passwordController().updatePassGetOTP);
+  app.post("/updatePassGenerateOTP",guest,passwordController().updatePassGenerateOTP);
+  app.post("/updatePassValidateOTP",guest,passwordController().updatePassValidateOTP);
+  app.post("/setNewPass",guest,passwordController().setNewPass);
   
   app.get("/login",guest, authController().login);
   app.post("/userlogin", authController().postUserLogin);

@@ -2,118 +2,111 @@ const passport = require("passport");
 const User = require("../../models/user");
 const Admin = require("../../models/admin");
 const bcrypt = require("bcrypt");
-const client = require("twilio")(process.env.ACCOUNTSID,process.env.AUTHTOKEN);
+const client = require("twilio")(process.env.ACCOUNTSID, process.env.AUTHTOKEN);
+const getOtp = require("../../config/getOTP");
 
 function authController() {
   return {
-    getOtp(req,res){
-      res.render("auth/getotp");
+    getOtp(req, res) {
+      res.render("auth/getotp", { type: "register" });
     },
 
-    generateOTP(req,res)
-    {
+    generateOTP(req, res) {
       console.log(req.body);
-      const{role,numberForOTP}= req.body;
-      if(!numberForOTP)
-      {
+      const { role, numberForOTP } = req.body;
+      if (!numberForOTP) {
         req.flash("error", "All Fields are required");
         req.flash("numberForOTP", numberForOTP);
         return res.redirect("/getOtp");
       }
-      if(role==="customer")
-      {
-        User.findOne({phone:numberForOTP},function(err,foundUser)
-        {
+      if (role === "customer") {
+        User.findOne({ phone: numberForOTP }, function (err, foundUser) {
           if (foundUser) {
             req.flash("error", "Number already exist");
             return res.redirect("/getOtp");
           }
         });
-
-        client
-              .verify
-              .services(process.env.SERVICEID)
-              .verifications
-              .create({
-                to:`+91${numberForOTP}`,
-                channel:'sms'
-              })
-              .then(function(data)
-              {
-                console.log(data);
-                if(data.status==="pending")
-                {
-                  res.render("auth/insertOTP",{number:numberForOTP,role:role,error:""});
-                }
-                else{
-                  req.flash("error", "Something went wrong");
-                  return res.redirect("/getOtp");
-                }
-              })
-        
-      }
-      else
-      {
-        Admin.findOne({ownernumber:numberForOTP},function(err,foundUser)
-        {
+        // getOtp(req,res,numberForOTP);
+        client.verify
+          .services(process.env.SERVICEID)
+          .verifications.create({
+            to: `+91${numberForOTP}`,
+            channel: "sms",
+          })
+          .then(function (data) {
+            console.log(data);
+            if (data.status === "pending") {
+              res.render("auth/insertOTP", {
+                type: "register",
+                number: numberForOTP,
+                role: role,
+                error: "",
+              });
+            } else {
+              req.flash("error", "Something went wrong");
+              return res.redirect("/getOtp");
+            }
+          });
+      } else {
+        Admin.findOne({ ownernumber: numberForOTP }, function (err, foundUser) {
           if (foundUser) {
             req.flash("error", "Number already exist");
             return res.redirect("/getOtp");
           }
         });
-
-        client
-              .verify
-              .services(process.env.SERVICEID)
-              .verifications
-              .create({
-                to:`+91${numberForOTP}`,
-                channel:'sms'
-              })
-              .then(function(data)
-              {
-                console.log(data);
-                if(data.status==="pending")
-                {
-                  res.render("auth/insertOTP",{number:numberForOTP,role:role,error:""});
-                }
-                else{
-                  req.flash("error", "Something went wrong");
-                  return res.redirect("/getOtp");
-                }
-              })
+        // getOtp(req,res,numberForOTP);
+        client.verify
+          .services(process.env.SERVICEID)
+          .verifications.create({
+            to: `+91${numberForOTP}`,
+            channel: "sms",
+          })
+          .then(function (data) {
+            console.log(data);
+            if (data.status === "pending") {
+              res.render("auth/insertOTP", {
+                type: "register",
+                number: numberForOTP,
+                role: role,
+                error: "",
+              });
+            } else {
+              req.flash("error", "Something went wrong");
+              return res.redirect("/getOtp");
+            }
+          });
       }
     },
 
-    validateOTP(req,res)
-    {
+    validateOTP(req, res) {
       console.log(req.body);
       const role = req.body.role;
-      const numberForOTP= req.body.numberForOTP;
+      const numberForOTP = req.body.numberForOTP;
       const OTP = req.body.OTP;
-      client
-              .verify
-              .services(process.env.SERVICEID)
-              .verificationChecks
-              .create({
-                to:`+91${numberForOTP}`,
-                code:OTP
-              })
-              .then(function(data)
-              {
-                console.log(data);
-                if(data.status==="approved")
-                {
-                  return res.render("auth/register",{number:numberForOTP,role:role});
-                }
-                else
-                {
-                  return res.render("auth/insertOTP",{number:numberForOTP,role:role,error:"Invalid OTP"});
-                }
-              })
+      client.verify
+        .services(process.env.SERVICEID)
+        .verificationChecks.create({
+          to: `+91${numberForOTP}`,
+          code: OTP,
+        })
+        .then(function (data) {
+          console.log(data);
+          if (data.status === "approved") {
+            return res.render("auth/register", {
+              number: numberForOTP,
+              role: role,
+            });
+          } else {
+            return res.render("auth/insertOTP", {
+              type: "register",
+              number: numberForOTP,
+              role: role,
+              error: "Invalid OTP",
+            });
+          }
+        });
 
-        // res.redirect("/register");
-
+      // res.redirect("/register");
     },
 
     login(req, res) {
@@ -184,7 +177,10 @@ function authController() {
         req.flash("name", name);
         req.flash("email", email);
         req.flash("phone", phone);
-        return res.render("auth/register",{number:phone,role:req.body.role});
+        return res.render("auth/register", {
+          number: phone,
+          role: req.body.role,
+        });
       }
 
       //check if email is already register
@@ -195,7 +191,10 @@ function authController() {
           req.flash("name", name);
           req.flash("email", email);
           req.flash("phone", phone);
-          return res.render("auth/register",{number:phone,role:req.body.role});
+          return res.render("auth/register", {
+            number: phone,
+            role: req.body.role,
+          });
         }
       });
 
@@ -218,7 +217,10 @@ function authController() {
         })
         .catch(function (err) {
           req.flash("error", "something went wrong");
-          return res.render("auth/register",{number:phone,role:req.body.role});
+          return res.render("auth/register", {
+            number: phone,
+            role: req.body.role,
+          });
         });
 
       //   User.register(newUser, password, function (err, user) {
@@ -252,9 +254,25 @@ function authController() {
     },
     async postadminRegister(req, res) {
       console.log(req.body);
-      const { resturentname,resturentaddress,resturentnumber,ownernumber,ownername,owneremail,adminpassword,} = req.body;
+      const {
+        resturentname,
+        resturentaddress,
+        resturentnumber,
+        ownernumber,
+        ownername,
+        owneremail,
+        adminpassword,
+      } = req.body;
       // validation error
-      if (!resturentname ||!owneremail ||!adminpassword ||!resturentaddress ||!resturentnumber ||!ownernumber ||!ownername) {
+      if (
+        !resturentname ||
+        !owneremail ||
+        !adminpassword ||
+        !resturentaddress ||
+        !resturentnumber ||
+        !ownernumber ||
+        !ownername
+      ) {
         req.flash("error", "All Fields are required");
         req.flash("name", resturentname);
         req.flash("email", owneremail);
@@ -263,7 +281,10 @@ function authController() {
         req.flash("ownernumber", ownernumber);
         req.flash("ownername", ownername);
 
-        return res.render("auth/register",{number:ownernumber,role:req.body.role});
+        return res.render("auth/register", {
+          number: ownernumber,
+          role: req.body.role,
+        });
       }
 
       //check if email is already register
@@ -277,7 +298,10 @@ function authController() {
           req.flash("resturentnumber", resturentnumber);
           req.flash("ownernumber", ownernumber);
           req.flash("ownername", ownername);
-          return res.render("auth/register",{number:ownernumber,role:req.body.role});
+          return res.render("auth/register", {
+            number: ownernumber,
+            role: req.body.role,
+          });
         }
       });
 
@@ -300,21 +324,20 @@ function authController() {
           // passport.authenticate("admin-local")(req, res, function () {
           //   return res.redirect("/");
           // });
-          req.login(newUser,function(err)
-          {
-            if(!err)
-            {
+          req.login(newUser, function (err) {
+            if (!err) {
               return res.redirect("/");
-            }
-            else
-            {
+            } else {
               console.log(err);
             }
-          })
+          });
         })
         .catch(function (err) {
           req.flash("error", "something went wrong");
-          return res.render("auth/register",{number:ownernumber,role:req.body.role});
+          return res.render("auth/register", {
+            number: ownernumber,
+            role: req.body.role,
+          });
         });
 
       //   User.register(newUser, password, function (err, user) {
@@ -343,8 +366,6 @@ function authController() {
       //       });
       //     }
       //   });
-
-      
     },
 
     logout(req, res) {
