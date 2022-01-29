@@ -2,9 +2,120 @@ const passport = require("passport");
 const User = require("../../models/user");
 const Admin = require("../../models/admin");
 const bcrypt = require("bcrypt");
+const client = require("twilio")(process.env.ACCOUNTSID,process.env.AUTHTOKEN);
 
 function authController() {
   return {
+    getOtp(req,res){
+      res.render("auth/getotp");
+    },
+
+    generateOTP(req,res)
+    {
+      console.log(req.body);
+      const{role,numberForOTP}= req.body;
+      if(!numberForOTP)
+      {
+        req.flash("error", "All Fields are required");
+        req.flash("numberForOTP", numberForOTP);
+        return res.redirect("/getOtp");
+      }
+      if(role==="customer")
+      {
+        User.findOne({phone:numberForOTP},function(err,foundUser)
+        {
+          if (foundUser) {
+            req.flash("error", "Number already exist");
+            return res.redirect("/getOtp");
+          }
+        });
+
+        client
+              .verify
+              .services(process.env.SERVICEID)
+              .verifications
+              .create({
+                to:`+91${numberForOTP}`,
+                channel:'sms'
+              })
+              .then(function(data)
+              {
+                console.log(data);
+                if(data.status==="pending")
+                {
+                  res.render("auth/insertOTP",{number:numberForOTP,role:role,error:""});
+                }
+                else{
+                  req.flash("error", "Something went wrong");
+                  return res.redirect("/getOtp");
+                }
+              })
+        
+      }
+      else
+      {
+        Admin.findOne({ownernumber:numberForOTP},function(err,foundUser)
+        {
+          if (foundUser) {
+            req.flash("error", "Number already exist");
+            return res.redirect("/getOtp");
+          }
+        });
+
+        client
+              .verify
+              .services(process.env.SERVICEID)
+              .verifications
+              .create({
+                to:`+91${numberForOTP}`,
+                channel:'sms'
+              })
+              .then(function(data)
+              {
+                console.log(data);
+                if(data.status==="pending")
+                {
+                  res.render("auth/insertOTP",{number:numberForOTP,role:role,error:""});
+                }
+                else{
+                  req.flash("error", "Something went wrong");
+                  return res.redirect("/getOtp");
+                }
+              })
+      }
+    },
+
+    validateOTP(req,res)
+    {
+      console.log(req.body);
+      const role = req.body.role;
+      const numberForOTP= req.body.numberForOTP;
+      const OTP = req.body.OTP;
+      client
+              .verify
+              .services(process.env.SERVICEID)
+              .verificationChecks
+              .create({
+                to:`+91${numberForOTP}`,
+                code:OTP
+              })
+              .then(function(data)
+              {
+                console.log(data);
+                if(data.status==="approved")
+                {
+                  return res.render("auth/register",{number:numberForOTP,role:role});
+                }
+                else
+                {
+                  return res.render("auth/insertOTP",{number:numberForOTP,role:role,error:"Invalid OTP"});
+                }
+              })
+
+        // res.redirect("/register");
+
+    },
+
     login(req, res) {
       res.render("auth/login");
     },
@@ -63,9 +174,6 @@ function authController() {
       })(req, res, next);
     },
 
-    register(req, res) {
-      res.render("auth/register");
-    },
     async postuserRegister(req, res) {
       console.log(req.body);
       const { name, email, phone, password } = req.body;
@@ -76,7 +184,7 @@ function authController() {
         req.flash("name", name);
         req.flash("email", email);
         req.flash("phone", phone);
-        return res.redirect("/register");
+        return res.render("auth/register",{number:phone,role:req.body.role});
       }
 
       //check if email is already register
@@ -87,7 +195,7 @@ function authController() {
           req.flash("name", name);
           req.flash("email", email);
           req.flash("phone", phone);
-          return res.redirect("/register");
+          return res.render("auth/register",{number:phone,role:req.body.role});
         }
       });
 
@@ -110,7 +218,7 @@ function authController() {
         })
         .catch(function (err) {
           req.flash("error", "something went wrong");
-          return res.redirect("/register");
+          return res.render("auth/register",{number:phone,role:req.body.role});
         });
 
       //   User.register(newUser, password, function (err, user) {
@@ -155,7 +263,7 @@ function authController() {
         req.flash("ownernumber", ownernumber);
         req.flash("ownername", ownername);
 
-        return res.redirect("/register");
+        return res.render("auth/register",{number:ownernumber,role:req.body.role});
       }
 
       //check if email is already register
@@ -169,7 +277,7 @@ function authController() {
           req.flash("resturentnumber", resturentnumber);
           req.flash("ownernumber", ownernumber);
           req.flash("ownername", ownername);
-          return res.redirect("/register");
+          return res.render("auth/register",{number:ownernumber,role:req.body.role});
         }
       });
 
@@ -206,7 +314,7 @@ function authController() {
         })
         .catch(function (err) {
           req.flash("error", "something went wrong");
-          return res.redirect("/register");
+          return res.render("auth/register",{number:ownernumber,role:req.body.role});
         });
 
       //   User.register(newUser, password, function (err, user) {

@@ -20,11 +20,29 @@ nav li a {
     color: $primary;
   }
 }
-section.hero {
-  background: $secondary;
-}
+// section.hero {
+ 
+//   ::before{
+//     content: "";
+//     background:url('/img/bg2.jpg') no-repeat center center/cover;
+//     position: absolute;
+//     top: 60px;
+//     left: 0px;
+//     height: 50%;
+//     width: 100%;
+//     z-index: -1;
+//     opacity: 0.4;
+//   }
+// }
 .size {
   background: $secondary;
+}
+.rest-box {
+  border-color: $pure;
+  transition: $smooth;
+  &:hover {
+    background: $secondary;
+  }
 }
 .add-to-cart {
   border: 2px solid $primary;
@@ -36,7 +54,7 @@ section.hero {
     color: $pure;
   }
 }
-.update-button{
+.update-button {
   border: 2px solid $primary;
   color: $primary;
   transition: $smooth;
@@ -46,7 +64,7 @@ section.hero {
     color: $pure;
   }
 }
-.hide{
+.hide {
   display: none;
 }
 .btn-primary {
@@ -77,10 +95,10 @@ section.login {
   border-radius: 50px !important;
   padding-left: 8px !important;
 }
-a.link-complete{
-  color:  $gray;
+a.link-complete {
+  color: $gray;
 }
-a.link-notcomplete{
+a.link-notcomplete {
   color: $primary;
 }
 
@@ -191,32 +209,29 @@ section.status {
 
 //text
 
-.status-box ul li.current-status span{
+.status-box ul li.current-status span {
   color: $primary;
 }
 
-
-.status-box ul li small
-{
+.status-box ul li small {
   float: right;
   font-size: 14px;
   margin-top: 8px;
 }
 
-
-@media(max-width:1060px){
+@media (max-width: 1060px) {
   .container {
     max-width: 90%;
   }
-  table{
+  table {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
 }
 
-@media(max-width:768px) {
-  .status-box ul li span::before{
+@media (max-width: 768px) {
+  .status-box ul li span::before {
     font-size: 34px;
   }
 }

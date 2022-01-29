@@ -20,13 +20,15 @@ function initRoutes(app) {
 
   app.get("/", homeController().index);
 
-  
+  app.get("/getotp",guest,authController().getOtp);
+
+  app.post("/generateOTP",guest,authController().generateOTP);
+  app.post("/validateOTP",guest,authController().validateOTP);
   
   app.get("/login",guest, authController().login);
   app.post("/userlogin", authController().postUserLogin);
   app.post("/adminlogin", authController().postAdminLogin);
 
-  app.get("/register",guest, authController().register);
   app.post("/userregister",authController().postuserRegister);
   app.post("/adminregister",authController().postadminRegister);
   

@@ -2331,11 +2331,9 @@ if (registerRole) {
     console.log(e.target.value);
 
     if (e.target.value === "admin") {
-      document.querySelector("#customerRegister").classList.add("hide");
-      document.querySelector("#adminRegister").classList.remove("hide");
+      document.querySelector("#setRole").value = "admin";
     } else {
-      document.querySelector("#customerRegister").classList.remove("hide");
-      document.querySelector("#adminRegister").classList.add("hide");
+      document.querySelector("#setRole").value = "customer";
     }
   });
 } //togle between login form

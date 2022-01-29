@@ -24,7 +24,8 @@ const userSchema = new Schema(
     },
     phone :{
       type:String,
-      required:false
+      required:false,
+      unique:true
     }
   },
   { timestamps: true }

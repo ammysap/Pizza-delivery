@@ -29,6 +29,7 @@ const adminSchema = new Schema(
     ownernumber: {
       type: String,
       required: false,
+      unique: true,
     },
     ownername: {
       type: String,

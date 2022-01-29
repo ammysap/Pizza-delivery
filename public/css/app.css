@@ -295,11 +295,15 @@ nav li a:hover {
   color: #FE5F1E;
 }
 
-section.hero {
+.size {
   background: #F8F8F8;
 }
 
-.size {
+.rest-box {
+  border-color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+.rest-box:hover {
   background: #F8F8F8;
 }
 
