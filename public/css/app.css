@@ -305,6 +305,7 @@ nav li a:hover {
 }
 .rest-box:hover {
   background: #F8F8F8;
+  box-shadow: 4px 4px 8px 2px #ccc;
 }
 
 .add-to-cart {

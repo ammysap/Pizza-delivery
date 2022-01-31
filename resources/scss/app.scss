@@ -42,6 +42,7 @@ nav li a {
   transition: $smooth;
   &:hover {
     background: $secondary;
+    box-shadow: 4px 4px 8px 2px $gray;
   }
 }
 .add-to-cart {
