@@ -302,10 +302,11 @@ nav li a:hover {
 .rest-box {
   border-color: #fff;
   transition: all 0.3s ease-in-out;
+  box-shadow: 2px 2px 4px 1px #ccc;
 }
 .rest-box:hover {
   background: #F8F8F8;
-  box-shadow: 4px 4px 8px 2px #ccc;
+  box-shadow: 6px 6px 8px 2px #ccc;
 }
 
 .add-to-cart {

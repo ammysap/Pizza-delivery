@@ -40,9 +40,11 @@ nav li a {
 .rest-box {
   border-color: $pure;
   transition: $smooth;
+  box-shadow: 2px 2px 4px 1px $gray;
   &:hover {
     background: $secondary;
-    box-shadow: 4px 4px 8px 2px $gray;
+    box-shadow: 6px 6px 8px 2px $gray;
+    
   }
 }
 .add-to-cart {
