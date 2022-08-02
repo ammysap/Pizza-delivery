@@ -33,5 +33,6 @@ Get OPT on number while registering to the app.
 ![image](https://user-images.githubusercontent.com/75664719/182364979-fb082be1-3d37-4cfe-89f5-5447ef931ac0.png)
 ![image](https://user-images.githubusercontent.com/75664719/182365265-77692b2a-9443-442b-bb65-440b20ca46dd.png)
 ![image](https://user-images.githubusercontent.com/75664719/182395096-035f2e76-18b9-4200-aaf1-b1c4332bdc23.png)
+![image](https://user-images.githubusercontent.com/75664719/182395335-bcbd86fb-8169-4860-8e1c-1377a39ae7e2.png)
 
 
