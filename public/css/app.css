@@ -299,14 +299,28 @@ nav li a:hover {
   background: #F8F8F8;
 }
 
+.background1 {
+  background-image: url("/img/bg2.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.background2 {
+  background-image: url("/img/bg3.avif");
+  background-position: center;
+  background-size: cover;
+}
+
 .rest-box {
   border-color: #fff;
   transition: all 0.3s ease-in-out;
   box-shadow: 2px 2px 4px 1px #ccc;
 }
 .rest-box:hover {
-  background: #F8F8F8;
   box-shadow: 6px 6px 8px 2px #ccc;
+  transform: scale(1.1, 1.1);
+  -webkit-transform: scale(1.1, 1.1);
+  -moz-transform: scale(1.1, 1.1);
 }
 
 .add-to-cart {

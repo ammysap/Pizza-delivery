@@ -4,14 +4,6 @@ function homeController() {
   return {
     index(req, res) {
       Menu.find(function (err, foundMenu) {
-        // if(!err)
-        // {
-        //     console.log(foundMenu);
-        // }
-        // else
-        // {
-        //     console.log(err);
-        // }
         if (req.user) {
             let name;
             if(req.user.role==="customer")
