@@ -4,16 +4,7 @@ function cartController() {
       res.render("customers/cart",{cart:req.session.cart});
     },
     update(req, res) {
-      // let cart = {
-      //     items:{
-      //         pizzaId:{
-      //             item:pizzaObject,
-      //             qty:0
-      //         }
-      //     },
-      //     totalQty: 0,
-      //     totalPrice: 0
-      // }
+      
       if (!req.session.cart) {
         req.session.cart = {
           items: {},

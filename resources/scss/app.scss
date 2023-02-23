@@ -20,31 +20,29 @@ nav li a {
     color: $primary;
   }
 }
-// section.hero {
- 
-//   ::before{
-//     content: "";
-//     background:url('/img/bg2.jpg') no-repeat center center/cover;
-//     position: absolute;
-//     top: 60px;
-//     left: 0px;
-//     height: 50%;
-//     width: 100%;
-//     z-index: -1;
-//     opacity: 0.4;
-//   }
-// }
 .size {
   background: $secondary;
+}
+.background1{
+  background-image: url("/img/bg2.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.background2{
+  background-image: url("/img/bg3.avif");
+  background-position: center;
+  background-size: cover;
 }
 .rest-box {
   border-color: $pure;
   transition: $smooth;
   box-shadow: 2px 2px 4px 1px $gray;
   &:hover {
-    background: $secondary;
+    // background: $secondary;
     box-shadow: 6px 6px 8px 2px $gray;
-    
+    transform: scale(1.1, 1.1);
+    -webkit-transform: scale(1.1, 1.1);
+    -moz-transform: scale(1.1, 1.1);
   }
 }
 .add-to-cart {
