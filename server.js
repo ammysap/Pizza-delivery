@@ -15,7 +15,19 @@ const bodyParser =require("body-parser");
 const passport = require("passport");
 const Emitter = require("events");
 
-mongoose.connect("mongodb+srv://admin-aman:MongoDB123@cluster2.0clvf.mongodb.net/PizzaDb", {
+try{
+  mongoose.connect(process.env.MONGO_CONNECTION_URL, {
+    useNewUrlParser: true,
+  });
+  const connection = mongoose.connection;
+  connection.once("open", () => { 
+    console.log("Database connected...");
+  });
+}catch(err){
+  console.log("Error in connecting to database");
+  console.log(err);
+}
+mongoose.connect(process.env.MONGO_CONNECTION_URL, {
   useNewUrlParser: true,
 });
 
@@ -30,7 +42,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     store: MongoDbStore.create({
-      mongoUrl: "mongodb+srv://admin-aman:MongoDB123@cluster2.0clvf.mongodb.net/PizzaDb",
+      mongoUrl: process.env.MONGO_CONNECTION_URL,
     }),
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 }, //24 hours

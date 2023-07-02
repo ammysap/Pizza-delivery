@@ -25,7 +25,7 @@ function passwordController() {
         });
         // getOtp(req,res,numberForOTP);
         client.verify
-          .services(process.env.SERVICEID)
+          .services(process.env.ACCOUNTSID)
           .verifications.create({
             to: `+91${numberForOTP}`,
             channel: "sms",
@@ -53,7 +53,7 @@ function passwordController() {
         });
         // getOtp(req,res,numberForOTP);
         client.verify
-          .services(process.env.SERVICEID)
+          .services(process.env.ACCOUNTSID)
           .verifications.create({
             to: `+91${numberForOTP}`,
             channel: "sms",
@@ -80,7 +80,7 @@ function passwordController() {
       const numberForOTP = req.body.numberForOTP;
       const OTP = req.body.OTP;
       client.verify
-        .services(process.env.SERVICEID)
+        .services(process.env.ACCOUNTSID)
         .verificationChecks.create({
           to: `+91${numberForOTP}`,
           code: OTP,
