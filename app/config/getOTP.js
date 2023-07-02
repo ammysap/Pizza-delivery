@@ -4,7 +4,7 @@ function getOTP(req,res,numberForOTP)
 {
     client
               .verify
-              .services(process.env.SERVICEID)
+              .services(process.env.ACCOUNTSID)
               .verifications
               .create({
                 to:`+91${numberForOTP}`,

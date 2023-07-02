@@ -28,7 +28,7 @@ function authController() {
         });
         // getOtp(req,res,numberForOTP);
         client.verify
-          .services(process.env.SERVICEID)
+          .services(process.env.ACCOUNTSID)
           .verifications.create({
             to: `+91${numberForOTP}`,
             channel: "sms",
@@ -56,7 +56,7 @@ function authController() {
         });
         // getOtp(req,res,numberForOTP);
         client.verify
-          .services(process.env.SERVICEID)
+          .services(process.env.ACCOUNTSID)
           .verifications.create({
             to: `+91${numberForOTP}`,
             channel: "sms",
@@ -84,7 +84,7 @@ function authController() {
       const numberForOTP = req.body.numberForOTP;
       const OTP = req.body.OTP;
       client.verify
-        .services(process.env.SERVICEID)
+        .services(process.env.ACCOUNTSID)
         .verificationChecks.create({
           to: `+91${numberForOTP}`,
           code: OTP,
@@ -368,10 +368,21 @@ function authController() {
       //   });
     },
 
+    // logout(req, res) {
+    //   req.logout();
+    //   return res.redirect("/login");
+    // },
     logout(req, res) {
-      req.logout();
-      return res.redirect("/login");
-    },
+      req.logout(function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/");
+
+        }
+        return res.redirect("/login");
+      });
+    }
+    
   };
 }
 
