@@ -6,7 +6,7 @@
   "author": "aman",
   "scripts": {
     "dev": "nodemon server.js",
-    "serve": "node server.js",
+    "serve": "concurrently \"npm run dev\" \"npm run watch\"",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "npm run development -- --watch",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
@@ -38,6 +38,7 @@
     "twilio": "^3.73.1"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "laravel-mix": "^6.0.39",
     "nodemon": "^2.0.15",
     "resolve-url-loader": "4.0.0",
