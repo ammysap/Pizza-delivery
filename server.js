@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const serverless = require("serverless-http");
 const app = express();
 const path = require("path");
 const ejs = require("ejs");
@@ -80,7 +81,7 @@ require("./routes/web")(app);
 //set template engine
 
 const server= app.listen(PORT, function () {
-  console.log("server started on port 3000");
+  console.log("server started on port ",PORT);
 });
 
 
@@ -110,3 +111,4 @@ eventEmitter.on("orderPlaced",function(data)
   io.to("adminRoom").emit("orderPlaced",data);
 })
  
+module.exports.handler = serverless(app);
