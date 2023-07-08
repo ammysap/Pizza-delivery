@@ -17,7 +17,7 @@ function init(passport) {
       password,
       done
     ) {
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email });passport-local-mongoose
       if (!user) {
         return done(null, false, { message: "no user with this email" });
       }
