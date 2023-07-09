@@ -38,7 +38,7 @@ const eventEmitter = new Emitter();
 app.set("eventEmitter",eventEmitter);
 
 //Session config
-const store = MongoDbStore.create({
+const store = new MongoDbStore({
   mongoUrl: process.env.MONGO_CONNECTION_URL,
   mongoOptions: {
     useNewUrlParser: true,
