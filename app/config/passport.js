@@ -63,20 +63,19 @@ function init(passport) {
     done(null, { _id: user._id, role: user.role });
   });
 
-  passport.deserializeUser(function (id, done) {
-    if (id.role === "customer") {
-      User.findById(id, function (err, user) {
-        done(err, user);
-      });
+  passport.deserializeUser(async function (id, done) {
+    try {
+      if (id.role === "customer") {
+        const user = await User.findById(id).exec();
+        done(null, user);
+      } else if (id.role === "admin") {
+        const user = await Admin.findById(id).exec();
+        done(null, user);
+      }
+    } catch (err) {
+      done(err, null);
     }
-    else if(id.role==="admin")
-    {
-        Admin.findById(id,function(err,user)
-        {
-            done(err,user);
-        })
-    }
-  });
+  });  
 }
 
 module.exports = init;

@@ -1,8 +1,6 @@
 const Order = require("../../../models/order");
 const moment = require("moment");
 
-
-
 function orderController() {
   return {
     store(req, res) {
@@ -26,21 +24,18 @@ function orderController() {
         order
           .save()
           .then(function (result) {
-            Order.populate(
-              result,
-              { path: "customerId" },
-              function (err, placedOrder) {
-                req.flash("success", "Order placed successfully");
-                delete req.session.cart;
+            return Order.populate(result, { path: "customerId" });
+          })
+          .then(function (placedOrder) {
+            req.flash("success", "Order placed successfully");
+            delete req.session.cart;
 
-                //Emit
+            //Emit
 
-                const eventEmitter = req.app.get("eventEmitter");
-                eventEmitter.emit("orderPlaced", placedOrder);
+            const eventEmitter = req.app.get("eventEmitter");
+            eventEmitter.emit("orderPlaced", placedOrder);
 
-                return res.redirect("/customer/orders");
-              }
-            );
+            return res.redirect("/customer/orders");
           })
           .catch(function (err) {
             console.log(err);
