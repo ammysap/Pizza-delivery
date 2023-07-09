@@ -81,7 +81,7 @@ require("./routes/web")(app);
 //set template engine
 
 const server= app.listen(PORT, function () {
-  console.log("server started on port ",PORT);
+  console.log("server started on port ", PORT);
 });
 
 
