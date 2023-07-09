@@ -6,15 +6,16 @@ function orderController() {
         sort: { createdAt: -1 },
       })
         .populate("customerId", "-password")
-        .exec(function (err, orders) {
-         if(req.xhr)
-         {
-           return res.json(orders)
-         }
-         else
-         {
-           return res.render("admin/orders");
-         }
+        .exec()
+        .then(function (orders) {
+          if (req.xhr) {
+            return res.json(orders);
+          } else {
+            return res.render("admin/orders");
+          }
+        })
+        .catch(function (err) {
+          console.error(err);
         });
     },
   };
