@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const serverless = require("serverless-http");
 const app = express();
 const path = require("path");
 const ejs = require("ejs");
@@ -110,3 +111,4 @@ eventEmitter.on("orderPlaced",function(data)
   io.to("adminRoom").emit("orderPlaced",data);
 })
  
+module.exports.handler = serverless(app);
