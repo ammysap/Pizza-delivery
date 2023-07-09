@@ -38,13 +38,23 @@ const eventEmitter = new Emitter();
 app.set("eventEmitter",eventEmitter);
 
 //Session config
+const store = new MongoDbStore({
+  mongoUrl: process.env.MONGO_CONNECTION_URL,
+  mongoOptions: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  collectionName: "sessions", // Optional, specifies the collection name for storing sessions
+  autoRemove: "interval", // Optional, removes expired sessions automatically
+  autoRemoveInterval: 10, // In minutes, the interval for removing expired sessions
+  secret: process.env.COOKIE_SECRET,
+});
+
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     resave: false,
-    store: MongoDbStore.create({
-      mongoUrl: process.env.MONGO_CONNECTION_URL,
-    }),
+    store: store,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 }, //24 hours
   })
